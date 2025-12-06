@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- toYaml .Values.matchLabels | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- toYaml .Values.matchLabels | nindent 8 }}
+    spec:
+      containers:
+        - name: frontend-container
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.service.containerPort }}
+          env:
+            - name: REACT_APP_REGISTER_REDIRECT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: REACT_APP_REGISTER_REDIRECT_URL
+            - name: REACT_APP_FORGOT_PASSWORD_REDIRECT
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: REACT_APP_FORGOT_PASSWORD_REDIRECT
+            - name: REACT_APP_STRIPE_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: frontend-config
+                  key: REACT_APP_STRIPE_KEY

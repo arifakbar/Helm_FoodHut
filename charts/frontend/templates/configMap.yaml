@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  REACT_APP_REGISTER_REDIRECT_URL: "https://foodhut-zpju.onrender.com/register/complete"
+  REACT_APP_FORGOT_PASSWORD_REDIRECT: "https://foodhut-zpju.onrender.com/login"
+  REACT_APP_STRIPE_KEY: "pk_test_51IhUG2SFyEg8AS59joeULfWuFCKtpKDcTOUDX00rjHLLkvA1uxAR0uAMNw5Xys5xD3w7XycA98RxDnNv0lXde78g00PKBYd1NH"
+  

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: {{.Values.replicaCount}}
+  selector:
+    matchLabels: 
+        {{- toYaml .Values.matchLabels | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- toYaml .Values.matchLabels | nindent 8 }}
+    spec:
+      containers:
+        - name: backend-container
+          image: "{{ .Values.image.repository }}:{{.Values.image.tag}}"
+          imagePullPolicy: "{{ .Values.image.pullPolicy }}"
+          env:
+            - name: PORT
+              value: "{{ .Values.service.containerPort }}"
+            - name: DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB
+            - name: CLOUDINARY_CLOUD_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: CLOUDINARY_CLOUD_NAME
+            - name: CLOUDINARY_API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: CLOUDINARY_API_KEY
+            - name: CLOUDINARY_API_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: CLOUDINARY_API_SECRET
+            - name: STRIPE_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: STRIPE_SECRET
